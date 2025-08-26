@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital UX Research Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin: auto;
+            height: 280px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 320px;
+            }
+        }
+        .modal-backdrop {
+            transition: opacity 0.3s ease;
+        }
+        .modal-content {
+            transition: all 0.3s ease;
+        }
+        .kpi-card {
+             background: linear-gradient(135deg, #00A6A6, #008282);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <div id="app" class="container mx-auto p-4 md:p-8">
+
+        <header class="text-center my-8">
+            <h1 class="text-3xl md:text-5xl font-extrabold text-gray-900">Hospital Experience Research Findings</h1>
+            <p class="mt-2 text-lg text-gray-600">An interactive summary of the IXD803 project data.</p>
+        </header>
+
+        <!-- KPIs Section -->
+        <section id="kpis" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 my-10">
+            <div class="kpi-card text-white rounded-xl shadow-lg p-6 flex flex-col justify-center text-center">
+                <p class="text-5xl font-extrabold">87%</p>
+                <p class="mt-2 font-semibold">Felt Anxious Due to Lack of Info</p>
+            </div>
+            <div class="kpi-card text-white rounded-xl shadow-lg p-6 flex flex-col justify-center text-center">
+                <p class="text-5xl font-extrabold">2.4 / 5</p>
+                <p class="mt-2 font-semibold">Average Ease of Navigation Score</p>
+            </div>
+            <div class="kpi-card text-white rounded-xl shadow-lg p-6 flex flex-col justify-center text-center">
+                <p class="text-5xl font-extrabold">2.5 / 5</p>
+                <p class="mt-2 font-semibold">Average Communication Score</p>
+            </div>
+        </section>
+
+        <!-- Charts Section -->
+        <section id="charts" class="my-10">
+            <h2 class="text-3xl font-bold text-center mb-8">Survey Data Visualization</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-xl font-bold text-center mb-4">Top Frustration Points</h3>
+                    <div class="chart-container h-80">
+                        <canvas id="frustrationChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-xl font-bold text-center mb-4">Communication Satisfaction</h3>
+                    <div class="chart-container">
+                        <canvas id="communicationChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Personas Section -->
+        <section id="personas" class="my-10">
+            <h2 class="text-3xl font-bold text-center mb-8">User Personas</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div onclick="showModal('priyaModal')" class="bg-white rounded-lg shadow-lg p-6 text-center cursor-pointer hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+                    <h3 class="text-2xl font-bold text-teal-700">Priya Sharma</h3>
+                    <p class="font-semibold text-gray-600">The Anxious Advocate</p>
+                    <blockquote class="mt-4 italic text-gray-500">"It feels like a full-time job just to stay on top of it all."</blockquote>
+                </div>
+                <div onclick="showModal('sameerModal')" class="bg-white rounded-lg shadow-lg p-6 text-center cursor-pointer hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+                    <h3 class="text-2xl font-bold text-orange-700">Sameer Ali</h3>
+                    <p class="font-semibold text-gray-600">The Overwhelmed Patient</p>
+                    <blockquote class="mt-4 italic text-gray-500">"I'm also scared I'll mess something up."</blockquote>
+                </div>
+            </div>
+        </section>
+
+        <!-- Modals -->
+        <div id="priyaModal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 hidden modal-backdrop opacity-0">
+            <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-lg modal-content transform scale-95">
+                <h3 class="text-2xl font-bold text-teal-700 mb-4">Priya Sharma: The Anxious Advocate</h3>
+                <p class="mb-4 text-gray-600">Priya represents the caregivers who are overwhelmed by the logistical and emotional burden of managing a loved one's care.</p>
+                <div class="text-left">
+                    <h4 class="font-bold mt-4">Goals:</h4>
+                    <ul class="list-disc list-inside text-gray-700">
+                        <li>Clearly understand her father's condition and treatment.</li>
+                        <li>Keep all family members updated efficiently.</li>
+                        <li>Feel confident that her father is receiving the best care.</li>
+                    </ul>
+                    <h4 class="font-bold mt-4">Pain Points:</h4>
+                    <ul class="list-disc list-inside text-gray-700">
+                        <li>Fragmented communication from different staff.</li>
+                        <li>Confusing medical jargon and information overload.</li>
+                        <li>Wasted time in waiting rooms with no updates.</li>
+                    </ul>
+                </div>
+                <button onclick="hideModal('priyaModal')" class="mt-6 w-full bg-teal-600 text-white font-bold py-2 px-4 rounded-md hover:bg-teal-700 transition">Close</button>
+            </div>
+        </div>
+
+        <div id="sameerModal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 hidden modal-backdrop opacity-0">
+            <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-lg modal-content transform scale-95">
+                <h3 class="text-2xl font-bold text-orange-700 mb-4">Sameer Ali: The Overwhelmed Patient</h3>
+                <p class="mb-4 text-gray-600">Sameer represents patients, especially those new to the healthcare system, who feel isolated, uninformed, and anxious about their own care.</p>
+                <div class="text-left">
+                    <h4 class="font-bold mt-4">Goals:</h4>
+                    <ul class="list-disc list-inside text-gray-700">
+                        <li>Understand his recovery process and what to expect.</li>
+                        <li>Manage his situation without constantly bothering his parents.</li>
+                        <li>Know exactly what to do after he leaves the hospital.</li>
+                    </ul>
+                    <h4 class="font-bold mt-4">Pain Points:</h4>
+                    <ul class="list-disc list-inside text-gray-700">
+                        <li>Feeling alone and like "just another bed number".</li>
+                        <li>Unclear post-discharge instructions and medication schedules.</li>
+                        <li>Hesitates to ask questions for fear of being a bother.</li>
+                    </ul>
+                </div>
+                <button onclick="hideModal('sameerModal')" class="mt-6 w-full bg-orange-600 text-white font-bold py-2 px-4 rounded-md hover:bg-orange-700 transition">Close</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const wrapLabel = (label) => {
+            const maxLength = 16;
+            if (label.length <= maxLength) return label;
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + ' ' + word).trim().length > maxLength) {
+                    lines.push(currentLine.trim());
+                    currentLine = word;
+                } else {
+                    currentLine = `${currentLine} ${word}`;
+                }
+            }
+            lines.push(currentLine.trim());
+            return lines.filter(line => line);
+        };
+
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            return Array.isArray(label) ? label.join(' ') : label;
+        };
+
+        const sharedChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'bottom', labels: { font: { family: 'Inter' } } },
+                tooltip: { callbacks: { title: tooltipTitleCallback } }
+            }
+        };
+
+        new Chart(document.getElementById('frustrationChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Discharge process', 'Getting test results', 'Registration', 'Billing', 'Parking'].map(wrapLabel),
+                datasets: [{
+                    label: 'Number of Mentions',
+                    data: [9, 8, 6, 5, 2],
+                    backgroundColor: ['#00A6A6', '#77D977', '#F2E63D', '#F29E3D', '#F2543D'],
+                    borderRadius: 4
+                }]
+            },
+            options: { ...sharedChartOptions, indexAxis: 'y', plugins: { ...sharedChartOptions.plugins, legend: { display: false } } }
+        });
+
+        new Chart(document.getElementById('communicationChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Very Dissatisfied', 'Dissatisfied', 'Neutral', 'Satisfied', 'Very Satisfied'],
+                datasets: [{
+                    label: 'User Ratings',
+                    data: [3, 5, 4, 2, 1],
+                    backgroundColor: ['#F2543D', '#F29E3D', '#F2E63D', '#77D977', '#00A6A6'],
+                    borderColor: '#FFFFFF',
+                    borderWidth: 2,
+                    hoverOffset: 8
+                }]
+            },
+            options: { ...sharedChartOptions }
+        });
+
+        window.showModal = (modalId) => {
+            const modal = document.getElementById(modalId);
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modal.querySelector('.modal-content').classList.remove('scale-95');
+            }, 10);
+        };
+
+        window.hideModal = (modalId) => {
+            const modal = document.getElementById(modalId);
+            modal.classList.add('opacity-0');
+            modal.querySelector('.modal-content').classList.add('scale-95');
+            setTimeout(() => modal.classList.add('hidden'), 300);
+        };
+    </script>
+</body>
+</html>
